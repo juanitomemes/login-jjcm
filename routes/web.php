@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +20,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     /**
      * Home Routes
      */
+    Route::get('form',[StudentController::class, 'index']);
+    Route::get('/autocomplete-student', [StudentController::class, 'autocomplete'])->name('autocomplete.student');
+
+
+
+
     Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/app', 'HomeController@app')->name('home.app');
+
+    Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 
     Route::group(['middleware' => ['guest']], function() {
         /**
@@ -39,6 +50,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         /**
          * Logout Routes
          */
-        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+
+        Route::resource('students', StudentController::class);
+        Route::resource('applications', ApplicationController::class);
+
     });
 });
